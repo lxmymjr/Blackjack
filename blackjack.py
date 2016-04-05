@@ -10,7 +10,7 @@ from game import Game
 def random_policy():
     return 0 if random.random() < 0.5 else 1
 
-def epsilon_greedy(epsilon, value_function, player, dealer):
+def epsilon_greedy_policy(epsilon, value_function, player, dealer):
     # exploration
     if random.random() < epsilon:
         return random_policy()
@@ -64,7 +64,7 @@ def iteration(iterations, update, Name, policy, n_zero=100):
             # find an action defined by the policy
             if action1 is not 1 and reward1 is not -1:
                 epsilon = n_zero / float(n_zero + counter_state[(player1, dealer)])
-                action1 = epsilon_greedy(epsilon, value_function, player1, dealer)
+                action1 = epsilon_greedy_policy(epsilon, value_function, player1, dealer)
 
             else:
                 action1 = 1
