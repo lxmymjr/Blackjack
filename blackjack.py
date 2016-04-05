@@ -7,24 +7,16 @@ from deck import Deck
 from game import Game
 # import plot
 
-def random_action():
+def random_policy():
     return 0 if random.random() < 0.5 else 1
 
 def epsilon_greedy(epsilon, value_function, player, dealer):
     # exploration
     if random.random() < epsilon:
-        return random_action()
+        return random_policy()
     # exploitation
     else:
-        value_HIT = value_function[(player, dealer, 0)]
-        value_STICK = value_function[(player, dealer, 1)]
-
-        if value_HIT > value_STICK:
-            return 0
-        elif value_STICK > value_HIT:
-            return 1
-        else:
-            return random_action()
+        return best_policy(value_function, player, dealer)
 
 def best_policy(value_function, player, dealer):
     value_HIT = value_function[(player, dealer, 0)]
@@ -35,7 +27,7 @@ def best_policy(value_function, player, dealer):
     elif value_STICK > value_HIT:
         return 1
     else:
-        return random_action()
+        return random_policy()
 
 def iteration(iterations, update, Name, policy, n_zero=100):
 
@@ -76,7 +68,7 @@ def iteration(iterations, update, Name, policy, n_zero=100):
 
             else:
                 action1 = 1
-                action2 = random_action()
+                action2 = random_policy()
 
             if (player1, dealer, action1) not in observed_keys1 and player1 <=21:
                 observed_keys1.append((player1, dealer, action1))
