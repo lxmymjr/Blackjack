@@ -7,13 +7,13 @@ from deck import Deck
 from game import Game
 # import plot
 
-def _random_action():
+def random_action():
     return 0 if random.random() < 0.5 else 1
 
 def epsilon_greedy(epsilon, value_function, player, dealer):
     # exploration
     if random.random() < epsilon:
-        return _random_action()
+        return random_action()
     # exploitation
     else:
         value_HIT = value_function[(player, dealer, 0)]
@@ -24,7 +24,7 @@ def epsilon_greedy(epsilon, value_function, player, dealer):
         elif value_STICK > value_HIT:
             return 1
         else:
-            return _random_action()
+            return random_action()
 
 def best_policy(value_function, player, dealer):
     value_HIT = value_function[(player, dealer, 0)]
@@ -35,9 +35,9 @@ def best_policy(value_function, player, dealer):
     elif value_STICK > value_HIT:
         return 1
     else:
-        return _random_action()
+        return random_action()
 
-def evaluate(iterations, update, Name, policy, n_zero=100):
+def iteration(iterations, update, Name, policy, n_zero=100):
 
     # (player, dealer, action) key
     value_function = defaultdict(float)
@@ -76,7 +76,7 @@ def evaluate(iterations, update, Name, policy, n_zero=100):
 
             else:
                 action1 = 1
-                action2 = _random_action()
+                action2 = random_action()
 
             if (player1, dealer, action1) not in observed_keys1 and player1 <=21:
                 observed_keys1.append((player1, dealer, action1))
@@ -195,9 +195,9 @@ def TD(reward1, reward2, observed_keys1, observed_keys2, counter_state, counter_
                 new = 0
             value_function[observed_keys2[i]] = (1-alpha) * old + alpha * (reward2 + new)
 
-winrecord_MC_epsilon = evaluate(1000000000, MC, 'MC-epsilon', epsilon_greedy)
-winrecord_QL_epsilon = evaluate(1000000000, QL, 'QL-epsilon', epsilon_greedy)
-winrecord_TD_epsilon = evaluate(1000000000, TD, 'TD-epsilon', epsilon_greedy)
-winrecord_MC_best = evaluate(1000000000, MC, 'MC-best', best_policy)
-winrecord_QL_best = evaluate(1000000000, QL, 'QL-best', best_policy)
-winrecord_TD_best = evaluate(1000000000, TD, 'TD-best', best_policy)
+winrecord_MC_epsilon = iteration(1000000000, MC, 'MC-epsilon', epsilon_greedy)
+winrecord_QL_epsilon = iteration(1000000000, QL, 'QL-epsilon', epsilon_greedy)
+winrecord_TD_epsilon = iteration(1000000000, TD, 'TD-epsilon', epsilon_greedy)
+winrecord_MC_best = iteration(1000000000, MC, 'MC-best', best_policy)
+winrecord_QL_best = iteration(1000000000, QL, 'QL-best', best_policy)
+winrecord_TD_best = iteration(1000000000, TD, 'TD-best', best_policy)
