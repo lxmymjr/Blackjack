@@ -64,7 +64,7 @@ def iteration(iterations, update, Name, policy, n_zero=100):
             # find an action defined by the policy
             if action1 is not 1 and reward1 is not -1:
                 epsilon = n_zero / float(n_zero + counter_state[(player1, dealer)])
-                action1 = epsilon_greedy_policy(epsilon, value_function, player1, dealer)
+                action1 = policy(epsilon, value_function, player1, dealer)
 
             else:
                 action1 = 1
@@ -187,9 +187,9 @@ def TD(reward1, reward2, observed_keys1, observed_keys2, counter_state, counter_
                 new = 0
             value_function[observed_keys2[i]] = (1-alpha) * old + alpha * (reward2 + new)
 
-winrecord_MC_epsilon = iteration(1000000000, MC, 'MC-epsilon', epsilon_greedy)
-winrecord_QL_epsilon = iteration(1000000000, QL, 'QL-epsilon', epsilon_greedy)
-winrecord_TD_epsilon = iteration(1000000000, TD, 'TD-epsilon', epsilon_greedy)
+winrecord_MC_epsilon = iteration(1000000000, MC, 'MC-epsilon', epsilon_greedy_policy)
+winrecord_QL_epsilon = iteration(1000000000, QL, 'QL-epsilon', epsilon_greedy_policy)
+winrecord_TD_epsilon = iteration(1000000000, TD, 'TD-epsilon', epsilon_greedy_policy)
 winrecord_MC_best = iteration(1000000000, MC, 'MC-best', best_policy)
 winrecord_QL_best = iteration(1000000000, QL, 'QL-best', best_policy)
 winrecord_TD_best = iteration(1000000000, TD, 'TD-best', best_policy)
